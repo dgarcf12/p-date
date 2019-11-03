@@ -180,4 +180,49 @@ public class Date {
  	return months.toString();
 
 }
-	
+public int numDias(int month) {
+        int numMonth = 0;
+        switch (month) {
+        case 1:
+        case 3:
+        case 5:
+        case 7:
+        case 8:
+        case 10:
+        case 12:
+            numMonth = 31;
+            break;
+        case 2:
+            if ( ((this.year % 400)==0) || ( (this.year %4==0) && !((this.year%100)==0)))
+                numMonth = 29;
+            else
+                numMonth = 28;
+            break;
+        case 4:
+        case 6:
+        case 9:
+        case 11:
+            numMonth = 30;
+            break;
+        }
+
+        return numMonth;
+    }
+
+    public String daysOfTheMonthLeft() {
+        int numMonth = numDias(this.month);
+        // Hacemos un bucle hasta el numero calculado antes
+
+        StringBuilder daysLeft = new StringBuilder();
+        for (int i = this.day; i <= numMonth; i++) {
+            Date daysLeftDate = new Date(i, this.month, this.year);
+
+            if (daysLeftDate.isDayOfMonthRight() == true) {
+
+                daysLeft.append(daysLeftDate + "\t");
+
+            }
+        }
+
+        return daysLeft.toString();
+    }	
