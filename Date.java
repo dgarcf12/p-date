@@ -178,51 +178,100 @@ public class Date {
     		months.append(monthsLeftDate.getMonthName() + "\t"); }
 
  	return months.toString();
+	}
+public int numDays(int month) {
+		int numMonth = 0;
+		switch (month) {
+		case 1:
+		case 3:
+		case 5:
+		case 7:
+		case 8:
+		case 10:
+		case 12:
+			numMonth = 31;
+			break;
+		case 2:
+			if ( ((this.year % 400)==0) || ( (this.year %4==0) && !((this.year%100)==0)))
+				numMonth = 29;
+			else
+				numMonth = 28;
+			break;
+		case 4:
+		case 6:
+		case 9:
+		case 11:
+			numMonth = 30;
+			break;
+		}
+		
+		return numMonth;
+	}
+	public String daysOfTheMonthLeft() {
+		int numMonth = numDays(this.month);
+		// Hacemos un bucle hasta el numero calculado antes
+		
+		StringBuilder daysLeft = new StringBuilder();
+		for (int i = this.day+1; i <= numMonth; i++) {
+			Date daysLeftDate = new Date(i, this.month, this.year);
+
+			if (daysLeftDate.isDayOfMonthRight() == true) {
+
+				daysLeft.append(daysLeftDate + "\t");
+
+			}
+		}
+
+		return daysLeft.toString();
+	}
+	public String monthsWithSameDays() {
+		String months = new String();
+		switch (numDays(this.month)){
+		case 31:
+			months = "Months with 31 days: Enero, Marzo, Mayo, Julio, Agosto, Octubre, Diciembre";
+			break;
+		case 28:
+		case 29:
+			months = "Febrero";
+			break;
+		case 30:
+			months = "Months with 30 days: Abril, Junio, Septiembre, Noviembre";
+			break;
+		}
+		return months;
+	}
+	public int numDaysFrom11(Date date) {
+		int num = 0;
+		int month = date.getMonth();
+		
+		for(int i=0;i<month;i++) {
+			num = num + numDays(i);
+		}
+		num = num + date.getDay();
+		return num-1;
+	}
+	public int numAttempsRand() {
+		int count = 0;
+		boolean off = false;
+		while(!off) {
+			Date random = new Date((int)Math.random()*31+1,(int)Math.random()*12+1,(int)Math.random()*2019+1);
+			count++;
+			off = isSame(random);
+		}
+		return count;
+	}
+	public String dayOfWeek() {
+		//El primer dia del año 2019 fue martes
+		String[] diasSemana = {"Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo", "Lunes"};
+		//Primero vemos cuantos dias han pasado desde ese dia
+		String day = new String();
+		Date today = new Date (this.day, this.month, this.year);
+		int weekDay = numDaysFrom11(today)%7;
+		day = diasSemana[weekDay];
+		return day;
+	}
+	public String toString() {
+		return this.day + "/" + this.month + "/" + this.year;
+	}
 
 }
-public int numDias(int month) {
-        int numMonth = 0;
-        switch (month) {
-        case 1:
-        case 3:
-        case 5:
-        case 7:
-        case 8:
-        case 10:
-        case 12:
-            numMonth = 31;
-            break;
-        case 2:
-            if ( ((this.year % 400)==0) || ( (this.year %4==0) && !((this.year%100)==0)))
-                numMonth = 29;
-            else
-                numMonth = 28;
-            break;
-        case 4:
-        case 6:
-        case 9:
-        case 11:
-            numMonth = 30;
-            break;
-        }
-
-        return numMonth;
-    }
-
-    public String daysOfTheMonthLeft() {
-        int numMonth = numDias(this.month);
-        // Hacemos un bucle hasta el numero calculado antes
-
-        StringBuilder daysLeft = new StringBuilder();
-        for (int i = this.day; i <= numMonth; i++) {
-            Date daysLeftDate = new Date(i, this.month, this.year);
-
-            if (daysLeftDate.isDayOfMonthRight() == true) {
-
-                daysLeft.append(daysLeftDate + "\t");
-
-            }
-        }
-
-        return daysLeft.toString();
-    }	
